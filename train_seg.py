@@ -1,4 +1,4 @@
-from utils.Metrics import DiceMetric, get_classwise_dice, get_soft_label, reshape_prediction_and_ground_truth
+from utils.Metrics import DiceMetric
 from core.networks import DeepLabv3_Plus
 from torch.utils.data import DataLoader
 from utils.LoadData_with_bg import Wsss_dataset, Wsss_test_dataset
@@ -106,7 +106,6 @@ def weight_loss(loss):
     loss = torch.sum(loss * loss_weight) / (n * loss.shape[1])
     return loss
 
-
 def joint_optimization(outputs_main, outputs_aux1, outputs_aux2, mask, kd_weight, kd_T):
     kd_loss = KDLoss(T=kd_T)
     avg_aux = (outputs_aux1 + outputs_aux2) / 2
@@ -116,7 +115,6 @@ def joint_optimization(outputs_main, outputs_aux1, outputs_aux2, mask, kd_weight
     L_ce = selection(outputs_main, outputs_aux1, outputs_aux2, mask)
     L = L_ce + kd_weight * L_kd
     return L
-
 
 def train_tri(model1, model2, model3, optimizer1, optimizer2, optimizer3, train_dataloader, args, epoch):
     model1.train()
@@ -193,30 +191,6 @@ def validate(model1, model2, model3, valid_dataloader, verbose=False, Monte=Fals
     else:
         return Dice_Metric.compute_dice(True, save)
 
-def validate_trainset(model1, model2, model3, valid_dataloader, verbose=False, Monte=False, save=False):
-    Dice_Metric = DiceMetric(4)
-    model1.eval()
-    model2.eval()
-    model3.eval()
-    my_background_root = "/mnt/data1/dataset/WSSS4LUAD/1.training/gamma_crf_train/"
-    with torch.no_grad():
-        for img1, mask, soft_mask, img_names in valid_dataloader:
-            img1 = img1.cuda()
-            ori_size = mask.shape[1:]
-            H, W = ori_size[0], ori_size[1]
-            # bg
-            my_bg_mask = Image.open(my_background_root + img_names[0]).resize([224,224], Image.Resampling.NEAREST)
-            my_bg_mask = np.array(my_bg_mask, np.uint8)
-
-            pred1 = (model1(img1) + model2(img1) + model3(img1)) / 3
-            pred1 = F.interpolate(pred1, size=ori_size, mode="bilinear", align_corners=True)
-            pred = pred1
-
-            Dice_Metric.add_batch(pred, mask, my_bg_mask)
-    if not verbose:
-        return Dice_Metric.compute_dice(False, save)
-    else:
-        return Dice_Metric.compute_dice(True, save)
 
 if __name__ == "__main__":
     start_time = time.time()
@@ -256,11 +230,10 @@ if __name__ == "__main__":
         train_tri(model1, model2, model3, optimizer1, optimizer2,
                   optimizer3, train_dataloader, args, i)
         t1 = time.time()
-        train_dice = validate_trainset(model1, model2, model3, train_dataloader2, verbose=True)
         valid_dice = validate(model1, model2, model3, valid_dataloader, verbose=True)
         t2 = time.time()
         print("training/validation time: {0:.2f}s/{1:.2f}s".format(t1 - t0, t2 - t1))
-        logging.info('train dice {0:.4f} valid dice {1:.4f}'.format(train_dice, valid_dice))
+        logging.info('valid dice {1:.4f}'.format(valid_dice))
 
         scheduler1.step()
         scheduler2.step()
