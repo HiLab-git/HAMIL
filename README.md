@@ -4,7 +4,7 @@ This repository provides the code for "HAMIL: High-resolution Activation Maps an
 under TMI minor revision.
 
 ## Usage
-1. To obtain the background masks
+1. To obtain the background masks. (If the background is not white regions, skip this step)
 
 ```
 utils.generate_bg_masks.py
