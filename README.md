@@ -5,6 +5,7 @@ under TMI minor revision.
 
 ## Usage
 1. To obtain the background masks. (If the background is not white regions, skip this step)
+
 ```train_set_root```: training set root, ```gamma_path```: path to save gamma transform for training set, ```gamma_crf_path```: path to save extracted backgrounds for training set, 
 
 ```
@@ -13,12 +14,12 @@ generate_bg_masks.py --train_set_root train_set_root --gamma_path gamma_path --g
 
 2. Train classification network
 ```
-train_cls.py
+train_cls.py --dataset_root dataset_root --gpu 0
 ```
 
 3. Train segmentation network
 ```
-train_seg.py
+train_seg.py --dataset_root dataset_root --gpu 0
 ```
 
 ## Acknowledgement
