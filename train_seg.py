@@ -42,19 +42,16 @@ def get_arguments():
                         default="", help="training images")
     parser.add_argument("--batch_size", type=int,
                         default=32, help="Train batch size")
-    # optimizer SGD, lr = 5e-4 or 1e-3, wd = 5e-4
     parser.add_argument("--lr", type=float, default=2e-3)
     parser.add_argument("--wd", type=float, default=5e-4)
 
     parser.add_argument("--gpu", nargs="+", type=int)
     parser.add_argument("--max_epoch", default=100, type=int)
-    # default=50
     parser.add_argument("--save_folder", default="checkpoints2/train_seg")
     parser.add_argument("--checkpoint1", type=str, default="")
     parser.add_argument("--checkpoint2", type=str, default="")
     parser.add_argument("--checkpoint3", type=str, default="")
 
-    # (320,256,256),(256,224,224)
     parser.add_argument("--image_resize", default=256, type=int)
     parser.add_argument("--image_crop", default=224, type=int)
     parser.add_argument("--test_image_size", default=224, type=int)
