@@ -9,3 +9,13 @@ under TMI minor revision.
 ```
 utils.generate_bg_masks.py
 ```
+
+2. Train classification network
+```
+train_cls.py
+```
+
+3. Train segmentation network
+```
+train_seg.py
+```
