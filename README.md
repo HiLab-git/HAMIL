@@ -4,3 +4,21 @@ This repository provides the code for "HAMIL: High-resolution Activation Maps an
 under TMI minor revision.
 
 ## Usage
+1. To obtain the background masks
+
+```
+utils.generate_bg_masks.py
+```
+
+2. Train classification network
+```
+train_cls.py
+```
+
+3. Train segmentation network
+```
+train_seg.py
+```
+
+## Acknowledgement
+The code of DeepLabv3+ is borrowed from [PuzzleCAM](https://github.com/shjo-april/PuzzleCAM)
