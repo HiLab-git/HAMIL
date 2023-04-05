@@ -19,3 +19,6 @@ train_cls.py
 ```
 train_seg.py
 ```
+
+## Acknowledgement
+The code of DeepLabv3+ is borrowed from [PuzzleCAM](https://github.com/shjo-april/PuzzleCAM)
