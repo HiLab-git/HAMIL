@@ -5,4 +5,7 @@ under TMI minor revision.
 
 ## Usage
 1. To obtain the background masks
-```utils.generate_bg_masks.py```
+
+```
+utils.generate_bg_masks.py
+```
