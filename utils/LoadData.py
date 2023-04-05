@@ -93,12 +93,6 @@ class Wsss_dataset(Dataset):
         label = self.get_label(img_name)
         img = Image.open(img_path).convert("RGB")
 
-        # my_bg_mask, and covert the background to 0
-        # my_bg_mask = np.array(Image.open(self.my_bg_path+img_name),dtype=np.uint8)
-        # img = np.array(img,dtype=np.uint8)
-        # img[my_bg_mask==255]=0
-        # img = Image.fromarray(img)
-
         raw_img = np.array(img, dtype=np.uint8)
         img = self.img_transform(img)
 

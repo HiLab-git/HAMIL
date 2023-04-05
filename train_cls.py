@@ -32,7 +32,7 @@ def seg_to_color(seg):
     return img
 
 def get_arguments():
-    parser = argparse.ArgumentParser(description="Wsss pytorch implementation")
+    parser = argparse.ArgumentParser(description="HAMIL pytorch implementation")
     parser.add_argument("--dataset_root", type=str,
                         default="", help="training images")
     parser.add_argument("--batch_size", type=int,
@@ -43,7 +43,7 @@ def get_arguments():
     parser.add_argument("--weight_decay", type=float, default=5e-4)
     parser.add_argument("--gpu", nargs="+", type=int)
     parser.add_argument("--train_epochs", default=100, type=int)
-    parser.add_argument("--save_folder", default="checkpoints2")
+    parser.add_argument("--save_folder", default="checkpoints")
     parser.add_argument("--checkpoint", type=str, default="")
     parser.add_argument("--input_size", type=int, default=256)
     parser.add_argument("--crop_size", type=int, default=224)
@@ -180,13 +180,11 @@ def compute_dice(model, valid_dataloader, verbose=False, save=False):
 def save_pic(model, dataloader):
     model.eval()
     # my background
-    my_background_root = "/mnt/data1/dataset/WSSS4LUAD/2.validation/my_bg_mask_patch_256/"
-    # my_background_root = "/mnt/data1/lanf_zhong/label_supervision_segmentation/WSSS_background_extract/bg_masks_hht/"
-    """for every image, compute the dice"""
+    my_background_root = "/mnt/data1/dataset/WSSS4LUAD/1.training/gamma_crf_train/"
     with torch.no_grad():
-        for img, label, bg_mask, gt, raw_img, img_name in dataloader:
+        for img, label, img_name in dataloader:
             # H, W
-            H, W = gt.shape[1], gt.shape[2]
+            H, W = img.shape[2], img.shape[3]
             img, label = img.cuda(), label.cuda()
 
             img_path = test_dataset.img_path + "/" + img_name[0]
@@ -203,10 +201,6 @@ def save_pic(model, dataloader):
                 _img = img_trans(_img)
                 _img = torch.unsqueeze(_img, 0)
                 _img = _img.cuda()
-
-                # baseline
-                # logit, cam_b6 = model(_img, True, (H, W))
-                # cam_a += cam_b6
 
                 # deep3
                 logit, _, _, cam_b6, cam_b5, cam_b4 = model(
@@ -286,8 +280,7 @@ if __name__ == "__main__":
     model_test.cuda()
     ckpt = torch.load(args.checkpoint, map_location="cpu")
     model_test.load_state_dict(ckpt['model'], strict=True)
-    # print('\nvalidation with multi test')
-    compute_dice(model_test, test_dataloader, verbose=True, save='log/DRS.csv')
-
+    compute_dice(model_test, test_dataloader, verbose=True, save='log/ham_net.csv')
+    save_pic(model, train_dataloader)
     time_end = time.time()
     print(f'done, time:{(time_end-time_start)/60}')

@@ -37,7 +37,7 @@ class KDLoss(nn.Module):
         return loss
 
 def get_arguments():
-    parser = argparse.ArgumentParser(description="Wsss pytorch implementation")
+    parser = argparse.ArgumentParser(description="HAMIL pytorch implementation")
     parser.add_argument("--dataset_root", type=str,
                         default="", help="training images")
     parser.add_argument("--batch_size", type=int,
