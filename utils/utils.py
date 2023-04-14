@@ -29,16 +29,16 @@ def monte_augmentation(n, model, img_path, H, W):
     """
     cam = torch.zeros((1, 3, H, W)).cuda()
     img_mean, img_std = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
-    for i in range(n):
-        scale_factor = 1+np.random.choice([0,0.25,0.5])
+    for _ in range(n):
+        scale_factor = 1 + np.random.uniform(low=-0.25,high=0.25)
         H_scale, W_scale = int(scale_factor*256), int(scale_factor*256)
         p_vflip = np.random.rand()
         p_hflip = np.random.rand()
         vflip_flag = p_vflip>0.5
         hflip_flag = p_hflip>0.5
-        rotation_degree = int(np.random.choice([0,45,90,135,180,225,270]))
+        rotation_degree = int(np.random.choice([0, 90, 180 ,270]))
 
-        img_trans = transforms.Compose([transforms.Resize((H_scale, W_scale)),transforms.ToTensor(),transforms.Normalize(img_mean, img_std)])
+        img_trans = transforms.Compose([transforms.Resize((H_scale, W_scale)), transforms.ToTensor(), transforms.Normalize(img_mean, img_std)])
         _img = Image.open(img_path).convert("RGB")
         _img = img_trans(_img)
         _img = torch.unsqueeze(_img, 0)
@@ -71,4 +71,4 @@ def monte_augmentation(n, model, img_path, H, W):
     return cam/n
 
 if __name__ == "__main__":
-    monte_augmentation(15,True,True)
+    monte_augmentation(20, True, True)
