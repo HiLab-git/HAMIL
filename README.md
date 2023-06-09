@@ -22,5 +22,16 @@ train_cls.py --dataset_root dataset_root --gpu 0
 train_seg.py --dataset_root dataset_root --gpu 0
 ```
 
+## Citation
+```
+@article{zhong2023hamil,
+  title={HAMIL: High-resolution Activation Maps and Interleaved Learning for Weakly Supervised Segmentation of Histopathological Images},
+  author={Zhong, Lanfeng and Wang, Guotai and Liao, Xin and Zhang, Shaoting},
+  journal={IEEE Transactions on Medical Imaging},
+  year={2023},
+  publisher={IEEE}
+}
+```
+
 ## Acknowledgement
 The code of DeepLabv3+ is borrowed from [PuzzleCAM](https://github.com/shjo-april/PuzzleCAM)
